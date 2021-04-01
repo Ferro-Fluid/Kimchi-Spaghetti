@@ -1,7 +1,7 @@
 import random
 import numpy as np
 
-def rand_prof():
+def rand_prof():                                        #Chooses a random profession from the full list of jobs. Needs reworking to pull from list
     desc = random.randrange(1, 24);
     if desc == 1:
         pref = "Baker";
@@ -54,14 +54,14 @@ def rand_prof():
 
     return pref
 
-def prof_pref(A):
+def prof_pref(A):                           #Determines the top 3 job preferences for a character based on the top 3 skills
     A[17] = A[17]+10;
     I = np.argsort(A)[::-1][:3];
     skl = ["","",""];
     pref_1 = "";
     pref_2 = "";
     pref_3 = "";
-    for g in range(2):
+    for g in range(2):                              #Determines the top three skills' indices and allocates those indices into the array skl
         if I[g] == 1:
             skl[g] = "Strength";
         elif I[g] == 2:
@@ -99,14 +99,14 @@ def prof_pref(A):
         elif I[g] == 18:
             skl[g] = "Likability";
 
-    if skl[0] == "Strength":
-        if skl[1] == "Precision":
+    if skl[0] == "Strength":                                #If-else tree to decide first preference
+        if skl[1] == "Precision":                           #Decides between Mason and Forrester based on the presense of Woodworking as the 3rd skill
             if skl[2] == "Woodworking":
                 pref_1 = "Forrester";
             else:
                 pref_1 = "Mason";
         else:
-            desc = random.randrange(0, 1);
+            desc = random.randrange(0, 1);                  #If strength is the first stat but precision is NOT the second skill, it randomly chooses between Miner and Roofer with a weight of 1:1
             if desc == 0:
                 pref_1 = "Miner";
             else:
@@ -118,12 +118,12 @@ def prof_pref(A):
             else: 
                 pref_1 = "Merchant";
         else: 
-            desc = random.randrange(0, 2);
+            desc = random.randrange(0, 2);                  #If Business is the first stat but Negotiation is NOT the second skill, it randomly chooses between Merchant and Grocer with a weight of 1:2
             if desc == 0:
                 pref_1 = "Merchant";
             else:
                 pref_1 = "Grocer";
-    elif skl[0] == "Precision":
+    elif skl[0] == "Precision":                             #With precision as the first skill, there are 4 jobs it can be and the second skill determines which of the four it will be
         if skl[1] == "Strength":
             pref_1 = "Stonemason";
         elif skl[1] == "Creativity":
@@ -133,7 +133,7 @@ def prof_pref(A):
         elif skl[1] == "Smithing":
             pref_1 = "Locksmith";
         else:
-            desc = random.randrange(0, 3);
+            desc = random.randrange(0, 3);                  #If Precision is the first skill and the second skill is NOT Strength, Creativity, Navigation or Smithing, it randomly chooses between Stonemason, Weaver, Watchman and Locksmith
             if desc == 0:
                 pref_1 = "Stonemason";
             elif desc == 1:
@@ -147,7 +147,7 @@ def prof_pref(A):
             if skl[2] == "Business":
                 pref_1 = "Armourer";
             else:
-                desc = random.randrange(0, 5);
+                desc = random.randrange(0, 5);              #If Smithing is the first skill and the second skill is Creativity but the third skill is NOT Business, it randomly chooses between Armourer and Blacksmith weighted 1:5
                 if desc == 0:
                     pref_1 = "Blacksmtih";
                 else:
@@ -156,13 +156,13 @@ def prof_pref(A):
             if skl[2] == "Business":
                 pref_1 = "Blacksmith";
             else:
-                desc = random.randrange(0, 5);
+                desc = random.randrange(0, 5);              #If Smithing is the first skill and the second skill is Strength but the third skill is NOT Business, it randomly chooses between Armourer and Blacksmith weighted 1:5
                 if desc == 0:
                     pref_1 = "Armourer";
                 else:
                     pref_1 = "Blacksmith";
         else:
-            pref_1 = "Blacksmtih";
+            pref_1 = "Blacksmtih";                          #If Smithing is the first skill but the second skill is NOT Creativity or Strength, it defaults to Blacksmith
     elif skl[0] == "Hunting":
         pref_1 = "Hunter";
     elif skl[0] == "Tanning":
@@ -176,7 +176,7 @@ def prof_pref(A):
         elif skl[1] == "Woodworking":
             pref_1 = "Cobbler";
         else:
-            desc = random.randrange(0, 1);
+            desc = random.randrange(0, 1);                  #If Leatherworking is the first skill and the second skill is NOT Precision or Woodworking, it randomly chooses between Belt Maker and Cobbler weighted 1:1
             if desc == 0:
                 pref_1 = "Belt Maker";
             else:
@@ -186,13 +186,13 @@ def prof_pref(A):
             if skl[2] == "Creavity":
                 pref_1 = "Carpenter";
             else:
-                desc = random.randrange(0, 2);
+                desc = random.randrange(0, 2);              #If Woodworking is the first skill and the second skill is Precision but the third skill is not Creativity, it randomly choose between Wheelwright and Carpenter weighted 1:2
                 if desc == 0:
                     pref_1 = "Wheelwright";
                 else:
                     pref_1 = "Carpenter";
         else:
-            desc = random.randrange(0, 2);
+            desc = random.randrange(0, 2);                  #If Woodworking is the first skill and the second skill is NOT Precision, it randomly choose between Wheelwright and Carpenter weighted 2:1
             if desc == 0:
                 pref_1 = "Carpenter";
             else:
@@ -249,7 +249,7 @@ def prof_pref(A):
     else:
         pref_1 = rand_prof()
     
-    if skl[1] == "Strength":
+    if skl[1] == "Strength":                                #If-else tree to decide second preference
         if skl[2] == "Precision":
             desc = random.randrange(0, 1);
             if desc == 0:
@@ -413,7 +413,7 @@ def prof_pref(A):
     else:
         pref_2 = rand_prof()
     
-    if skl[2] == "Strength":
+    if skl[2] == "Strength":                            #If-else tree to decide third preference
         desc = random.randrange(0, 3);
         if desc == 0:
             pref_3 = "Forrester";
@@ -480,7 +480,7 @@ def prof_pref(A):
     else:
         pref_3 = rand_prof()
     
-    if pref_3 == pref_1:
+    if pref_3 == pref_1:                        #double checks for duplicates and uses rand_prof() if it finds one
         pref_3 = rand_prof();
     elif pref_2 == pref_3:
         pref_3 = rand_prof();
@@ -488,12 +488,41 @@ def prof_pref(A):
     T3 = [pref_1,pref_2,pref_3];
     return T3
 
-Cit_0 = input("Set initial number of villagers: ");                            ##Initial population
+def job_rat0(R,C):
+    default = [28,10,18,5,1,8,2,2,5,3,2,2,1,3,1,1,1,1,1,1,1,1,1,1]          #Default ratio for all current jobs, will have to edit when new professions are added
+    Rat = 0
+    Jobs_0 = np.zeros((len(default),), dtype=int)             #Creates empty array of zeros that is the size of default
+    if R == 0:
+        R = default                                     #sets R to default to use default job ratios
+        tot = 0
+        for i in range(23):
+            tot = tot + R[i]                            #tallys up ratio amounts
+        for j in range(23):
+            Rat = R[j]/tot                  #creates decimal that is the ratio of the number of that job to the overall population size
+            n = C*Rat                       #Determines how many vacancies of a particular job there are
+            Jobs_0[j] = round(n)            #rounds of the vacancy number to a whole number
+        return Jobs_0
+    else:
+        return
 
+print("=======================================================================")
+print("-------------------Character Driven Economy Sim v0.1-------------------\n")
+
+print("Give ratios for jobs in this order, \n1.Farmer\n2.Miner\n3.Forrester\n4.Mason\n5.Stonemason\n6.Hunter\n7.Blacksmith\n8.Weaver\n9.Cook\n10.Baker\n11.Butcher\n12.Carpenter\n13.Tanner\n14.Grocer\n15.Merchant\n16.Roofer\n17.Winemaker\n18.Locksmith\n19.Armourer\n20.Watchman\n21.Cobbler\n22.Wheelwright\n23.Belt Maker\n24.Tax Collector")
+print("\ninput '0' for a default ratio")
+      
+Rat_0 = input()
+Rat_0 = int(Rat_0)
+
+Cit_0 = input("Set initial number of villagers: ");                            ##Initial population
 Cit_0 = int(Cit_0)
 
+Jobs_0 = job_rat0(Rat_0,Cit_0)
+
+print(Jobs_0)
+
 ## Skills:
-## 1.##ength
+## 1.Strength
 ## 2.Business
 ## 3.Precision
 ## 4.Creativity
@@ -543,12 +572,12 @@ TOP_Pref = [[""]*4 for i in range(Cit_0)]
 
 for j in range(Cit_0):
      Cit_s = POP[j,[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]];
-     top3 = prof_pref(Cit_s);
-     print(top3)
+     top3 = prof_pref(Cit_s)
+     #print(top3)
      for n in range(3):
          TOP_Pref[j][n+1] = top3[n];
 
-print(TOP_Pref)
+
 
 
 
