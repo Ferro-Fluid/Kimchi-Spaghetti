@@ -1,5 +1,71 @@
+##Current known bugs:
+##    1. When the first profession preference is Weaver, Watchman or Stonemason, there is a chance that the second profession preference will be " ". Can be seen by printing array top3 as it runs.
+
+##Current function/segments being worked on:
+##    1. Initial job allocation based on job preferences of initial pop putlation and initial job ratios.
+##          -function defined as Job_Sel0()
+
+##Needed lists:
+##    1. Farmer profession Products
+##    2. Miner Profession Products
+##    3. Forrester Profession Products
+##    4. Mason Profession Products
+##    5. Stonemason Profession Products
+##    6. Hunter Profession Products
+##    7. Blacksmith Profession Products
+##    8. Weaver Profession Products
+##    9. Cook Profession Products
+##    10. Baker Profession Products
+##    11. Butcher Profession Products
+##    12. Carpenter Profession Products
+##    13. Tanner Profession Products
+##    14. Grocer Profession Products
+##    15. Merchant Profession Products
+##    16. Roofer Profession Products
+##    17. Winemaker Profession Products
+##    18. Locksmith Profession Products
+##    19. Armourer Profession Products
+##    20. Watchman Profession Products
+##    21. Cobbler Profession Products
+##    22. Wheelwright Profession Products
+##    23. Belt Maker Profession Products
+##    24. Tax Collector Profession Products
+
+##Needed fuctions:
+##    1. Farmer profession
+##    2. Miner Profession
+##    3. Forrester Profession
+##    4. Mason Profession
+##    5. Stonemason Profession
+##    6. Hunter Profession
+##    7. Blacksmith Profession
+##    8. Weaver Profession
+##    9. Cook Profession
+##    10. Baker Profession
+##    11. Butcher Profession
+##    12. Carpenter Profession
+##    13. Tanner Profession
+##    14. Grocer Profession
+##    15. Merchant Profession
+##    16. Roofer Profession
+##    17. Winemaker Profession
+##    18. Locksmith Profession
+##    19. Armourer Profession
+##    20. Watchman Profession
+##    21. Cobbler Profession
+##    22. Wheelwright Profession
+##    23. Belt Maker Profession
+##    24. Tax Collector Profession
+##    25. New citizen creation
+##    26. working age job initalization
+##    27. Top level individual citizen function?
+##    28. 'perfect descision' calculator for previous few weeks/months
+##    
 import random
 import numpy as np
+
+            #List of jobs
+J_ls = ["Farmer", "Miner", "Forrester", "Mason", "Stonemason", "Hunter", "Blacksmith", "Weaver" ,"Cook", "Baker", "Butcher", "Carpenter", "Tanner", "Grocer", "Merchant", "Roofer", "Winemaker", "Locksmith", "Armourer", "Watchman", "Cobbler", "Wheelwright", "Belt Maker", "Tax Collector"]
 
 def rand_prof():                                        #Chooses a random profession from the full list of jobs. Needs reworking to pull from list
     desc = random.randrange(1, 24);
@@ -501,9 +567,46 @@ def job_rat0(R,C):
             Rat = R[j]/tot                  #creates decimal that is the ratio of the number of that job to the overall population size
             n = C*Rat                       #Determines how many vacancies of a particular job there are
             Jobs_0[j] = round(n)            #rounds of the vacancy number to a whole number
+            if Jobs_0[j] == 0:
+                Jobs_0[j] = 1
         return Jobs_0
     else:
         return
+
+def Job_Sel0(J_0,T_P,J_ls):
+    Prof0 = np.zeros((len(T_P), dtype(str))          #initalizes an array of zeros that are strings
+    for i in range(len(J_0)):                       #for loop that goes through every index value for J_0
+        g = 0                                       #initializes counter for the slots of a given profession
+        for j in  range(J_0[i]):                    #loop to fill slots for given profession
+            if g == J_0[i]:                         #if the slots are filled, it forces the top loop to tick to the next value of i (not sure if required in python)
+                i = i + 1
+            else:                           
+                for k in range(T_P):                #iterates through list of profession preferences to find a sutible villager to fill a slot
+                    if T_P[k,0] == J_ls[i]:
+                        if Prof0[k] == "0":         #check to see if that villager has already been given a job
+                            Prof0[k] = J_ls[i]
+                            g = g + 1               #increases the profession slot counter
+                    else:
+                        if T_P[k,1] == J_ls[i]:         #check for second job prefernce
+                            if Prof0[k] == "0":
+                                Prof0[k] = J_ls[i]
+                                g = g + 1
+                        else:
+                            if T_P[k,2] == J_ls[i]:     #check for thrid job preference
+                                if Prof0[k] == "0":
+                                    Prof0[k] = J_ls[i]
+                                    g = g + 1
+                            else:
+                                k = k + 1               #moves to next villager if the current villager didn't have that job as a preference
+                    if k == len(T_P) && g != J_0[i]:
+                        for h in range(T_P):
+                            if Prof0[h] == "0":
+                                Prof0[h] = J_ls[i]
+                                g = g + 1
+                            if g == J_0[i]:
+                                i = i + 1
+                                
+    return Prof0
 
 print("=======================================================================")
 print("-------------------Character Driven Economy Sim v0.1-------------------\n")
@@ -519,7 +622,7 @@ Cit_0 = int(Cit_0)
 
 Jobs_0 = job_rat0(Rat_0,Cit_0)
 
-print(Jobs_0)
+#print(Jobs_0)
 
 ## Skills:
 ## 1.Strength
@@ -576,7 +679,6 @@ for j in range(Cit_0):
      #print(top3)
      for n in range(3):
          TOP_Pref[j][n+1] = top3[n];
-
 
 
 
